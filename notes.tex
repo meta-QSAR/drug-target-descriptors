@@ -1,0 +1,75 @@
+\newcount\Comments  
+\Comments=1   
+\documentclass[a4paper,12pt, english]{article}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+
+\usepackage{babel}
+%\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{purple}{rgb}{1,0,1}
+%\usepackage{subcaption}
+
+\newcommand{\kibitz}[2]{\ifnum\Comments=1\textcolor{#1}{#2}\fi}
+% add yourself here:
+\newcommand{\ls}[1]{\kibitz{red}      {[Larisa: #1]}}
+\newcommand{\cg}[1]  {\kibitz{purple}   {[Crina: #1]}}
+\newcommand{\ns}[1]{\kibitz{cyan}     {[Noureddin: #1]}}
+
+
+
+\usepackage{listings}
+\usepackage{url}
+%\usepackage{graphicx}
+
+\usepackage{verbatim}
+
+%\usepackage{caption}
+%\usepackage{enumitem}
+
+%\onehalfspacing
+\newcommand{\shellcmd}[1]{\\\indent\indent\texttt{\footnotesize\# #1}\\}
+\begin{document}
+
+\title{Descriptors of Drug Targets}
+\date{Nov 2014}
+\author{By: Noureddin Sadawi}
+\maketitle
+
+\large
+\section{Basic/Statistical Descriptors from the R Package \texttt{Peptides}}
+Functions here perform calculates using the sequence as a \texttt{String} in uppercase. Observe that each of them returns one real value. More info about the \texttt{Peptides} package can be found at:\\
+\url{http://cran.r-project.org/web/packages/Peptides/}
+
+\begin{enumerate}
+	\item  \underline{aindex(seq):} This function calculates the Ikai (1980) aliphatic index of a protein. The aindex is defined as the relative volume occupied by aliphatic side chains (Alanine, Valine, Isoleucine, and Leucine). It may be regarded as a positive factor for the increase of thermostability of globular proteins.
+	\item  \underline{boman(seq):} This function computes the potential protein interaction index proposed by Boman (2003) based in the amino acid sequence of a protein. The index is equal to the sum of the solubility values for all residues in a sequence, it might give an overall estimate of the potential of a peptide to bind to membranes or other proteins as receptors, to normalize it is divided by the number of residues. A protein have high binding potential if the index value is higher than 2.48
+	\item \underline{charge(seq, pH, pKscale):}  This function computes the net charge of a protein sequence based on the Henderson-Hasselbalch equation described by Moore, D. S. (1985). The net charge can be calculated at defined pH using one of the \textbf{9} pKa scales availables: \emph{Bjellqvist , Dawson , EMBOSS , Lehninger , Murray , Rodwell , Sillero , Solomon or Stryer}\\(Example: charge(seq="KLVCLLTKKC",pH=7, pKscale="Murray"))
+	\item \underline{hmoment(seq,angle,window):} This function compute the hmoment based on Eisenberg, D., Weiss, R. M., \& Terwilliger, T. C. (1984). Hydriphobic moment is a quantitative measure of the amphiphilicity perpendicular to the axis of any periodic peptide structure, such as the a-helix or b-sheet. It can be calculated for an amino acid sequence of N residues and their associated hydrophobicities Hn. An 11 residues window is used as default.\\Example: hmoment(seq = "FLPVLAGLTPSIVPKLVCLLTKKC", angle = 100, window = 11)
+	\item \underline{hydrophobicity(seq,scale):} This function calculates the GRAVY hydrophobicity index of an amino acids sequence using one of the 38 scales from different sources.\\
+	A character string specifying the hydophobicity scale to be used; must be one of \emph{"Aboderin","AbrahamLeo","Argos","BlackMould","BullBreese","Casari","Chothia","Cid","Cowan3.4","Cowan7.5",
+"Eisenberg","Engelman","Fasman","Fauchere","Goldsack","Guy","HoppWoods","Janin","Jones","Juretic","Kidera","Kuhn","KyteDoolittle","Levitt","Manavalan","Miyazawa","Parker","Ponnuswamy","Prabhakaran",
+"Rao","Rose","Roseman","Sweet","Tanford","Welling","Wilson","Wolfenden"or"Zimmerman"}\\Example: hydrophobicity("QWGRRCCGWGPGRRYCVRWC","Aboderin") or hydrophobicity("QWGRRCCGWGPGRRYCVRWC","AbrahamLeo")
+	\item \underline{instaindex(seq):} This function calculates the instability index proposed by Guruprasad (1990). A protein whose instability index is smaller than 40 is predicted as stable, a value above 40 predicts that the protein may be unstable.
+	\item \underline{lengthpep(seq):} This function counts the number of amino acids in a protein sequence
+	\item \underline{mw(seq):} This function calculates the molecular weight of a protein sequence. It is calculated as the sum of the mass of each amino acid using the scale available on Compute pI/Mw tool
+	\item \underline{pI(seq):} This function computes the isoelectric point (pI), which is the pH at which a particular molecule or surface carries no net electrical charge.
+\end{enumerate} 
+
+
+
+
+\section{Amino Acid Sequence-based Descriptor from the R Package \texttt{ProtR}}
+More info here: \url{http://cran.r-project.org/web/packages/protr/}\\
+The dipeptide composition gives a fixed pattern length of 400. The dipeptide composition encapsulates information about the fraction of amino acids as well as their local order. The dipeptide composition is calculated using the following equation:
+\begin{equation} \mbox{Fraction of dep(i)}=\frac{\mbox{total number of dep(i)}}{\mbox{Total number of all possible dipeptides}}\end{equation} 
+Where $dep(i)$ is a dipeptide $i$ out of 400 dipeptides\\
+The required function from this package is called \texttt{extractDC(seq)} where $seq$ is a character vector representing the input protein sequence.\\ \\
+More information about this descriptor can be found in this paper:\\
+"M. Bhasin, G. P. S. Raghava. Classification of Nuclear Receptors Based on Amino Acid Composition and Dipeptide Composition. Journal of Biological Chemistry, 2004, 279, 23262"\\ \\
+Also, I have understood from reading through several papers that Andreas Bender (Uni of Cambridge) uses it frequently in his experiments. One paper says "these descriptors are simple, yet are known to be quite good at predicting protein structural classes, functional classes and subcellular localizations, Bhasin and Raghava 2004"
+
+
+\end{document}
